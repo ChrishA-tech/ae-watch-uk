@@ -1,6 +1,6 @@
 # 🏥 AE-Watch UK: NHS Winter Pressure & A&E Surge Early-Warning Command Platform
 
-[![CI Pipeline](https://github.com/chrishpepfelix/ae-watch-uk/actions/workflows/ci.yml/badge.svg)](https://github.com/chrishpepfelix/ae-watch-uk/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/ChrishA-tech/ae-watch-uk/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrishA-tech/ae-watch-uk/actions/workflows/ci.yml)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 [![dbt 1.12](https://img.shields.io/badge/dbt-PostgreSQL-orange.svg)](https://www.getdbt.com/)
 [![PostgreSQL 16](https://img.shields.io/badge/PostgreSQL-PostGIS%20%2B%20pgvector-336791.svg)](https://www.postgresql.org/)
@@ -141,7 +141,7 @@ Liverpool University Hospitals NHS Foundation Trust (`REM`) operates acute emerg
 
 ### 1. Clone & Environment Setup
 ```bash
-git clone https://github.com/chrishpepfelix/ae-watch-uk.git
+git clone https://github.com/ChrishA-tech/ae-watch-uk.git
 cd ae-watch-uk
 
 # Create virtual environment and sync dependencies

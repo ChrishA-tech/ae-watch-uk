@@ -25,7 +25,7 @@ provider "aws" {
       Project     = var.project_name
       Environment = var.environment
       Author      = var.author
-      Repository  = "https://github.com/chrishpepfelix/ae-watch-uk"
+      Repository  = "https://github.com/ChrishA-tech/ae-watch-uk"
     }
   }
 }
