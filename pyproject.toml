@@ -38,6 +38,7 @@ dependencies = [
     "langgraph>=0.2.0",
     "langchain-core>=0.3.0",
     "sentence-transformers>=3.0.0",
+    "streamlit>=1.67.0",
 ]
 
 [project.optional-dependencies]
