@@ -1,0 +1,90 @@
+services:
+  postgres:
+    build:
+      context: ./infra/docker/postgres
+    image: ae-watch-postgres:16-postgis-vector
+    container_name: aewatch-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aewatch}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aewatchpass2026}
+      POSTGRES_DB: ${POSTGRES_DB:-aewatch_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aewatch} -d ${POSTGRES_DB:-aewatch_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  neo4j:
+    image: neo4j:5.26.0-community
+    container_name: aewatch-neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-aewatchpass2026}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u ${NEO4J_USER:-neo4j} -p ${NEO4J_PASSWORD:-aewatchpass2026} 'RETURN 1;' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  marquez-db:
+    image: postgres:16-alpine
+    container_name: aewatch-marquez-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: marquez
+      POSTGRES_PASSWORD: marquez
+      POSTGRES_DB: marquez
+    volumes:
+      - marquez_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marquez -d marquez"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  marquez:
+    image: marquezproject/marquez:0.49.0
+    container_name: aewatch-marquez
+    restart: unless-stopped
+    ports:
+      - "5002:5000"
+      - "5001:5001"
+    environment:
+      MARQUEZ_CONFIG: /usr/src/app/marquez.config.yml
+      MARQUEZ_PORT: 5000
+      MARQUEZ_ADMIN_PORT: 5001
+    volumes:
+      - ./infra/marquez/marquez.config.yml:/usr/src/app/marquez.config.yml:ro
+    depends_on:
+      marquez-db:
+        condition: service_healthy
+
+  marquez-web:
+    image: marquezproject/marquez-web:0.49.0
+    container_name: aewatch-marquez-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      MARQUEZ_HOST: marquez
+      MARQUEZ_PORT: 5000
+    depends_on:
+      - marquez
+
+volumes:
+  postgres_data:
+  neo4j_data:
+  marquez_db_data:

@@ -1,0 +1,36 @@
+# Environment & secrets
+.env
+*.env
+!.env.example
+
+# Python & Virtual Environments
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Testing & Linting caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# dbt artifacts & logs
+dbt_ae_watch/target/
+dbt_ae_watch/dbt_packages/
+dbt_ae_watch/logs/
+
+# Data caches & local dead-letter exports
+data/
+*.parquet
+*.duckdb
+
+# OS artifacts
+.DS_Store
+Thumbs.db

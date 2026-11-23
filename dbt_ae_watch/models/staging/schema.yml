@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: stg_nhs_ae_attendances
+    description: "Standardized Silver monthly A&E attendances and 4-hour performance for NHS Trusts."
+    columns:
+      - name: period_date
+        description: "First day of reporting month."
+        data_tests:
+          - not_null
+      - name: org_code
+        description: "Official NHS ODS Organisation Code."
+        data_tests:
+          - not_null
+      - name: performance_4hr_pct
+        description: "Percentage of patients seen within 4 hours [0.0 - 100.0]."
+        data_tests:
+          - not_null
+      - name: breach_4hr_pct
+        description: "Percentage of patients breaching 4 hours."
+        data_tests:
+          - not_null
+
+  - name: stg_ukhsa_pathogens
+    description: "Standardized Silver weekly UKHSA surveillance metrics for Norovirus, Flu, and RSV."
+    columns:
+      - name: pathogen
+        description: "Infectious disease topic name."
+        data_tests:
+          - not_null
+      - name: metric
+        description: "Metric indicator identifier."
+        data_tests:
+          - not_null
+      - name: metric_value
+        description: "Recorded metric value (rate or count)."
+        data_tests:
+          - not_null
+
+  - name: stg_weather_daily
+    description: "Standardized Silver daily weather telemetry and cold-snap metrics mapped to NHS Trusts."
+    columns:
+      - name: trust_code
+        description: "NHS Trust ODS code."
+        data_tests:
+          - not_null
+      - name: record_date
+        description: "Observation date."
+        data_tests:
+          - not_null
+      - name: cold_snap_degree_days
+        description: "Degree deficit below 5 degrees Celsius."
+        data_tests:
+          - not_null

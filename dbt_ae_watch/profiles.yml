@@ -1,0 +1,13 @@
+dbt_ae_watch:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('POSTGRES_HOST', 'localhost') }}"
+      user: "{{ env_var('POSTGRES_USER', 'aewatch') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD', 'aewatchpass2026') }}"
+      port: "{{ env_var('POSTGRES_PORT', '5432') | int }}"
+      dbname: "{{ env_var('POSTGRES_DB', 'aewatch_db') }}"
+      schema: silver
+      threads: 4
+      keepalives_idle: 0

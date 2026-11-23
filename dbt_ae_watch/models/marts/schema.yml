@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: fct_trust_winter_pressure_daily
+    description: "Gold analytical feature mart uniting NHS Trust A&E attendances, trolley waits, breach rates, weather degree-days, and pathogen burdens."
+    columns:
+      - name: period_date
+        description: "Reporting period starting date."
+        data_tests:
+          - not_null
+      - name: trust_code
+        description: "NHS Trust ODS code."
+        data_tests:
+          - not_null
+      - name: performance_4hr_pct
+        description: "Percentage of patients seen within 4 hours [0.0 - 100.0]."
+        data_tests:
+          - not_null
+      - name: operational_pressure_level
+        description: "Clinical winter surge pressure level."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['NORMAL', 'ELEVATED', 'SEVERE', 'CRITICAL']
