@@ -79,8 +79,8 @@ class OpenMeteoClient:
         self,
         client: httpx.AsyncClient,
         site: dict[str, Any],
-        start_date: str = "2023-11-01",
-        end_date: str = "2024-03-31",
+        start_date: str = "2024-01-01",
+        end_date: str = "2026-11-20",
     ) -> list[OpenMeteoWeatherRecord]:
         """Fetch historical daily weather archive for a specific hospital site."""
         params = {
@@ -188,8 +188,8 @@ class OpenMeteoClient:
     async def run(
         self,
         sites: list[dict[str, Any]] | None = None,
-        start_date: str = "2023-11-01",
-        end_date: str = "2024-03-31",
+        start_date: str = "2024-01-01",
+        end_date: str = "2026-11-20",
     ) -> int:
         """Execute full async weather ingestion pipeline with OpenLineage telemetry."""
         target_sites = sites or TRUST_COORDINATES

@@ -32,7 +32,12 @@ monthly_pathogen_summary AS (
         ROUND(AVG(CASE WHEN pathogen = 'RSV' AND metric LIKE '%hospitalAdmissionRate%' THEN metric_value END)::NUMERIC, 2) AS rsv_admission_rate,
         ROUND(AVG(CASE WHEN pathogen = 'RSV' AND metric LIKE '%positivity%' THEN metric_value END)::NUMERIC, 2) AS rsv_positivity_pct,
         -- Norovirus metrics
-        ROUND(SUM(CASE WHEN pathogen = 'norovirus' THEN metric_value END)::NUMERIC, 2) AS norovirus_total_cases
+        ROUND(SUM(CASE WHEN pathogen = 'norovirus' THEN metric_value END)::NUMERIC, 2) AS norovirus_total_cases,
+        -- COVID-19 PCR Positivity & Healthcare Burden
+        ROUND(AVG(CASE WHEN pathogen = 'COVID-19' AND metric LIKE '%positivity%' THEN metric_value END)::NUMERIC, 2) AS covid_positivity_pct,
+        ROUND(AVG(CASE WHEN pathogen = 'COVID-19' AND metric LIKE '%admission%' THEN metric_value END)::NUMERIC, 2) AS covid_admission_rate,
+        -- NHS 111 Acute Respiratory Syndromic Calls
+        ROUND(AVG(CASE WHEN metric LIKE '%NHS111%' THEN metric_value END)::NUMERIC, 2) AS nhs111_resp_calls_7d_avg
     FROM weekly_pathogens
     GROUP BY period_month
 )
@@ -44,5 +49,8 @@ SELECT
     COALESCE(flu_admission_rate_lag_2w, 0.0) AS flu_admission_rate_lag_2w,
     COALESCE(rsv_admission_rate, 0.0) AS rsv_admission_rate,
     COALESCE(rsv_positivity_pct, 0.0) AS rsv_positivity_pct,
-    COALESCE(norovirus_total_cases, 0.0) AS norovirus_total_cases
+    COALESCE(norovirus_total_cases, 0.0) AS norovirus_total_cases,
+    COALESCE(covid_positivity_pct, 0.0) AS covid_positivity_pct,
+    COALESCE(covid_admission_rate, 0.0) AS covid_admission_rate,
+    COALESCE(nhs111_resp_calls_7d_avg, 0.0) AS nhs111_resp_calls_7d_avg
 FROM monthly_pathogen_summary

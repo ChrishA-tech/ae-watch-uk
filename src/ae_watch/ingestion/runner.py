@@ -26,7 +26,9 @@ def nhs():
     """Ingest real NHS England A&E monthly attendances & emergency admissions."""
     console.print("[bold cyan]Starting NHS England A&E Ingestion...[/bold cyan]")
     count = asyncio.run(nhs_ae_loader.run())
-    console.print(f"[bold green]Successfully ingested {count} NHS A&E records into Bronze![/bold green]")
+    console.print(
+        f"[bold green]Successfully ingested {count} NHS A&E records into Bronze![/bold green]"
+    )
 
 
 @app.command()
@@ -34,7 +36,9 @@ def ukhsa():
     """Ingest UKHSA Norovirus, Influenza, and RSV metrics from public API."""
     console.print("[bold cyan]Starting UKHSA Surveillance Ingestion...[/bold cyan]")
     count = asyncio.run(ukhsa_client.run())
-    console.print(f"[bold green]Successfully ingested {count} UKHSA surveillance records into Bronze![/bold green]")
+    console.print(
+        f"[bold green]Successfully ingested {count} UKHSA surveillance records into Bronze![/bold green]"
+    )
 
 
 @app.command()
@@ -42,7 +46,9 @@ def weather():
     """Ingest Open-Meteo telemetry mapped to NHS Trust coordinates."""
     console.print("[bold cyan]Starting Open-Meteo Weather Ingestion...[/bold cyan]")
     count = asyncio.run(weather_client.run())
-    console.print(f"[bold green]Successfully ingested {count} Weather records into Bronze![/bold green]")
+    console.print(
+        f"[bold green]Successfully ingested {count} Weather records into Bronze![/bold green]"
+    )
 
 
 @app.command()

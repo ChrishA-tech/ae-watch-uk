@@ -100,7 +100,9 @@ async def test_weather_fetch_site_records_mocked():
         router.get("https://archive-api.open-meteo.com/v1/archive").respond(200, json=mock_data)
 
         async with httpx.AsyncClient() as client:
-            records = await weather_client.fetch_weather_for_site(client, site, "2024-01-15", "2024-01-16")
+            records = await weather_client.fetch_weather_for_site(
+                client, site, "2024-01-15", "2024-01-16"
+            )
             assert len(records) == 2
             assert records[0].trust_code == "REM"
             assert records[0].temp_min_c == -2.0

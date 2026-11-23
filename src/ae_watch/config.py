@@ -22,45 +22,31 @@ class Settings(BaseSettings):
 
     # Gemini Free-Tier Models & API
     gemini_api_key: str = Field(default="", alias="GEMINI_API_KEY")
-    gemini_reasoning_model: str = Field(
-        default="gemini-3.8-flash", alias="GEMINI_REASONING_MODEL"
-    )
-    gemini_fast_model: str = Field(
-        default="gemini-3.5-flash-lite", alias="GEMINI_FAST_MODEL"
-    )
+    gemini_reasoning_model: str = Field(default="gemini-3.8-flash", alias="GEMINI_REASONING_MODEL")
+    gemini_fast_model: str = Field(default="gemini-3.5-flash-lite", alias="GEMINI_FAST_MODEL")
     gemini_embedding_model: str = Field(
         default="gemini-embedding-2", alias="GEMINI_EMBEDDING_MODEL"
     )
 
     # PostgreSQL 16 + PostGIS + pgvector
     postgres_user: str = Field(default="aewatch", alias="POSTGRES_USER")
-    postgres_password: str = Field(
-        default="aewatchpass2026", alias="POSTGRES_PASSWORD"
-    )
+    postgres_password: str = Field(default="aewatchpass2026", alias="POSTGRES_PASSWORD")
     postgres_host: str = Field(default="localhost", alias="POSTGRES_HOST")
     postgres_port: int = Field(default=5432, alias="POSTGRES_PORT")
     postgres_db: str = Field(default="aewatch_db", alias="POSTGRES_DB")
 
     # Marquez & OpenLineage Telemetry
-    openlineage_url: str = Field(
-        default="http://localhost:5002", alias="OPENLINEAGE_URL"
-    )
-    openlineage_namespace: str = Field(
-        default="ae-watch-uk", alias="OPENLINEAGE_NAMESPACE"
-    )
+    openlineage_url: str = Field(default="http://localhost:5002", alias="OPENLINEAGE_URL")
+    openlineage_namespace: str = Field(default="ae-watch-uk", alias="OPENLINEAGE_NAMESPACE")
 
     # Neo4j Community
     neo4j_uri: str = Field(default="bolt://localhost:7687", alias="NEO4J_URI")
     neo4j_user: str = Field(default="neo4j", alias="NEO4J_USER")
-    neo4j_password: str = Field(
-        default="aewatchpass2026", alias="NEO4J_PASSWORD"
-    )
+    neo4j_password: str = Field(default="aewatchpass2026", alias="NEO4J_PASSWORD")
 
     # Target Benchmark Trust: Liverpool University Hospitals NHS FT (ODS: REM)
     benchmark_trust_ods: str = "REM"
-    benchmark_trust_name: str = (
-        "Liverpool University Hospitals NHS Foundation Trust"
-    )
+    benchmark_trust_name: str = "Liverpool University Hospitals NHS Foundation Trust"
 
     # Cheshire & Merseyside ICB Trust ODS Codes
     cheshire_merseyside_trust_ods: list[str] = [

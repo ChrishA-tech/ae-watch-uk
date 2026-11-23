@@ -28,13 +28,16 @@ SELECT
     tw.total_cold_snap_degree_days,
     tw.total_precipitation_mm,
     tw.max_wind_speed_kmh,
-    -- Epidemiological Surveillance
+    -- Epidemiological Surveillance (Flu, RSV, Noro, COVID-19 & 111 Calls)
     p.flu_admission_rate,
     p.flu_positivity_pct,
     p.flu_admission_rate_lag_2w,
     p.rsv_admission_rate,
     p.rsv_positivity_pct,
     p.norovirus_total_cases,
+    p.covid_positivity_pct,
+    p.covid_admission_rate,
+    p.nhs111_resp_calls_7d_avg,
     -- Operational Pressure Risk Classification
     CASE
         WHEN tw.performance_4hr_pct < 65.0 OR tw.over12hr_trolley_waits > 1000 THEN 'CRITICAL'

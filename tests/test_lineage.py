@@ -69,7 +69,9 @@ async def test_emit_event_unreachable_does_not_crash():
     event = telemetry.build_event("COMPLETE", "test.job", "run-999")
 
     with respx.mock(assert_all_called=True) as router:
-        router.post("http://non-existent-host:9999/api/v1/lineage").side_effect = httpx.ConnectError("Connection refused")
+        router.post(
+            "http://non-existent-host:9999/api/v1/lineage"
+        ).side_effect = httpx.ConnectError("Connection refused")
         success = await telemetry.emit_event(event)
         assert success is False
 
@@ -81,8 +83,10 @@ async def test_track_run_emits_fail_on_pipeline_exception():
     emitted_events = []
 
     with respx.mock(assert_all_called=True) as router:
+
         def side_effect(request):
             import json
+
             emitted_events.append(json.loads(request.content))
             return httpx.Response(201)
 

@@ -30,6 +30,7 @@ dbt_ae_watch/logs/
 data/
 *.parquet
 *.duckdb
+mlruns/
 
 # OS artifacts
 .DS_Store

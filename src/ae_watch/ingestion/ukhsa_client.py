@@ -1,7 +1,7 @@
 """UKHSA Data Dashboard REST API Client.
 
-Pulls weekly laboratory reports and healthcare admission metrics for
-Norovirus, Influenza, and RSV from https://api.ukhsa-dashboard.data.gov.uk/.
+Pulls weekly laboratory reports, hospital admissions, and syndromic calls for
+Influenza, RSV, Norovirus, COVID-19, and NHS 111 acute respiratory indicators.
 Author: CHRISH PEP FELIX A
 """
 
@@ -21,7 +21,7 @@ from ae_watch.utils.resilience import execute_with_resilience
 
 BASE_URL = "https://api.ukhsa-dashboard.data.gov.uk"
 
-# Target surveillance metrics: National (England) and Regional (North West)
+# Target surveillance metrics: National (England) and Regional (North West) spanning 2024–2026
 TARGET_METRIC_PATHS = [
     # Influenza
     "/themes/infectious_disease/sub_themes/respiratory/topics/Influenza/geography_types/Nation/geographies/England/metrics/influenza_healthcare_hospitalAdmissionRateByWeek",
@@ -33,6 +33,11 @@ TARGET_METRIC_PATHS = [
     "/themes/infectious_disease/sub_themes/respiratory/topics/RSV/geography_types/Nation/geographies/England/metrics/rsv_testing_positivityByWeek",
     # Norovirus
     "/themes/infectious_disease/sub_themes/gastrointestinal/topics/norovirus/geography_types/Nation/geographies/England/metrics/norovirus_cases_count",
+    # COVID-19 PCR Positivity & Healthcare Burden
+    "/themes/infectious_disease/sub_themes/respiratory/topics/COVID-19/geography_types/Nation/geographies/England/metrics/COVID-19_testing_positivity7DayRolling",
+    "/themes/infectious_disease/sub_themes/respiratory/topics/COVID-19/geography_types/Nation/geographies/England/metrics/COVID-19_healthcare_admissionRollingMean",
+    # NHS 111 Acute Respiratory Syndromic Triage Calls
+    "/themes/infectious_disease/sub_themes/respiratory/topics/acute-respiratory-infection/geography_types/Nation/geographies/England/metrics/acute-respiratory-infection_syndromic_NHS111triagedcalls_averageRolling7Day",
 ]
 
 
@@ -47,7 +52,7 @@ class UKHSAClient:
         client: httpx.AsyncClient,
         path: str,
         page_size: int = 100,
-        max_pages: int = 5,
+        max_pages: int = 25,
     ) -> list[UKHSAPathogenRecord]:
         """Fetch paginated records from UKHSA API with tenacity resilience."""
         records: list[UKHSAPathogenRecord] = []
@@ -60,7 +65,9 @@ class UKHSAClient:
             resp = await execute_with_resilience(
                 client.get,
                 next_url,
-                headers={"User-Agent": "AE-Watch-UK/0.1.0 (Research Ingestion; CHRISH PEP FELIX A)"},
+                headers={
+                    "User-Agent": "AE-Watch-UK/0.1.0 (Research Ingestion; CHRISH PEP FELIX A)"
+                },
                 timeout=25.0,
             )
             data = resp.json()
@@ -72,7 +79,7 @@ class UKHSAClient:
                     continue
                 try:
                     p_start = datetime.strptime(raw_date_str, "%Y-%m-%d").date()
-                    # Weekly reporting window ends 6 days later
+                    # Daily or weekly reporting window
                     p_end = p_start + timedelta(days=6)
                 except ValueError:
                     continue
@@ -115,30 +122,30 @@ class UKHSAClient:
             return 0
 
         inserted = 0
-        with psycopg.connect(self.pg_conn_uri) as conn:
-            with conn.cursor() as cur:
-                for rec in records:
-                    cur.execute(
-                        """
-                        INSERT INTO bronze.ukhsa_pathogens_raw
-                        (theme, sub_theme, topic, metric, geography_type, geography_name,
-                         geography_code, metric_value, period_start, period_end, ingested_at)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-                        """,
-                        (
-                            rec.theme,
-                            rec.sub_theme,
-                            rec.topic,
-                            rec.metric,
-                            rec.geography_type,
-                            rec.geography_name,
-                            rec.geography_code,
-                            rec.metric_value,
-                            rec.period_start,
-                            rec.period_end,
-                        ),
-                    )
-                    inserted += 1
+        with psycopg.connect(self.pg_conn_uri) as conn, conn.cursor() as cur:
+            for rec in records:
+                cur.execute(
+                    """
+                    INSERT INTO bronze.ukhsa_pathogens_raw
+                    (theme, sub_theme, topic, metric, geography_type, geography_name,
+                     geography_code, metric_value, period_start, period_end, ingested_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                    ON CONFLICT DO NOTHING
+                    """,
+                    (
+                        rec.theme,
+                        rec.sub_theme,
+                        rec.topic,
+                        rec.metric,
+                        rec.geography_type,
+                        rec.geography_name,
+                        rec.geography_code,
+                        rec.metric_value,
+                        rec.period_start,
+                        rec.period_end,
+                    ),
+                )
+                inserted += 1
             conn.commit()
 
         logger.info("persisted_ukhsa_records_to_bronze", count=inserted)

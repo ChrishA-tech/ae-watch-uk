@@ -6,7 +6,6 @@ Author: CHRISH PEP FELIX A
 """
 
 
-
 def test_silver_nhs_ae_contracts(db_conn):
     """Verify Silver A&E performance percentage constraints and REM presence."""
     with db_conn.cursor() as cur:

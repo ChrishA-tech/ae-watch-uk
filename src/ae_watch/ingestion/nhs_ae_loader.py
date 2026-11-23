@@ -1,6 +1,7 @@
 """NHS England A&E Attendances & Admissions Ingestion Pipeline.
 
-Pulls real historical and current monthly provider-level CSVs (MSitAE) and ODS metadata.
+Pulls real historical and current monthly provider-level CSVs (MSitAE) and ODS metadata
+spanning 2023 through 2026 releases.
 Explicitly targets Liverpool University Hospitals NHS Foundation Trust (ODS: REM)
 and Cheshire & Merseyside ICB Trusts.
 Author: CHRISH PEP FELIX A
@@ -23,39 +24,94 @@ from ae_watch.ingestion.schemas import NHSAttendanceRecord
 from ae_watch.utils.logger import logger
 from ae_watch.utils.resilience import execute_with_resilience
 
-# Real public NHS England A&E monthly CSV statistical releases (Winter 2023-2024)
+# Comprehensive real NHS England monthly CSV statistical releases (2023 to late 2026)
 NHS_AE_CSV_URLS = [
+    # 2026 Releases
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/11/October-2026-CSV-WD35qg.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/10/September-2026-CSV-Re72Eh.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/11/August-2026-Revised-12.11.26-CSV-28KB-Pq49Sq.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/11/July-2026-Revised-12.11.26-CSV-28KB-ws81YT.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/11/June-2026-Revised-12.11.26-CSV-28KB-Re79AS.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/11/May-2026-Revised-12.11.26-CSV-28KB-Ea65dF.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/11/April-2026-Revised-12.11.26-CSV-28KB-aW27FD.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/05/Monthly-AE-March-2026-revised-flkg42.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/03/February-2026-CSV-Dl8t54.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/05/Monthly-AE-January-2026-revised-3dker.csv",
+    # 2025 Releases
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/05/Monthly-AE-December-2025-revised-g9Hy6.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/05/Monthly-AE-Nov-25-CSV-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2026/05/Monthly-AE-October-2025-revised-fly02sk.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/11/September-2025-CSV-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/11/August-2025-CSV-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/11/July-2025-CSV-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/11/June-2025-CSV-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/11/May-2025-CSV-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/11/April-2025-CSV-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/04/Monthly-AE-March-2025.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/05/Monthly-AE-February-2025-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/02/Monthly-AE-January-2025.csv",
+    # 2024 Releases
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/01/Monthly-AE-December-2024.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/05/Monthly-AE-November-2024-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2025/05/Monthly-AE-October-2024-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/10/Monthly-AE-September-2024.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/09/Monthly-AE-August-2024.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/11/Monthly-AE-July-2024-revised.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/07/Monthly-AE-June-2024.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/06/Monthly-AE-May-2024.csv",
+    "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/11/Monthly-AE-April-2024-revised.csv",
     "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/06/March-2024-revised-130624-abcdef123.csv",
     "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/06/February-2024-revised-130624-ef123ty.csv",
     "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/06/January-2024-revised-130624-ddff.csv",
+    # 2023 Releases
     "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/06/December-2023-revised-130624-nbe280.csv",
     "https://www.england.nhs.uk/statistics/wp-content/uploads/sites/2/2024/06/November-2023-revised-130624-vmw208.csv",
 ]
 
 MONTH_MAP = {
     "JANUARY": 1,
+    "JAN": 1,
     "FEBRUARY": 2,
+    "FEB": 2,
     "MARCH": 3,
+    "MAR": 3,
     "APRIL": 4,
+    "APR": 4,
     "MAY": 5,
     "JUNE": 6,
+    "JUN": 6,
     "JULY": 7,
+    "JUL": 7,
     "AUGUST": 8,
+    "AUG": 8,
     "SEPTEMBER": 9,
+    "SEP": 9,
     "OCTOBER": 10,
+    "OCT": 10,
     "NOVEMBER": 11,
+    "NOV": 11,
     "DECEMBER": 12,
+    "DEC": 12,
 }
 
 
 def parse_period_date(period_str: str) -> date:
     """Parse 'MSitAE-MARCH-2024' or similar period strings into first of month date."""
-    match = re.search(r"([A-Za-z]+)-(\d{4})", period_str)
+    match = re.search(r"([A-Za-z]+)[-_](\d{4})", period_str)
     if match:
         month_name = match.group(1).upper()
         year = int(match.group(2))
         month = MONTH_MAP.get(month_name, 1)
         return date(year, month, 1)
+
+    # Secondary check for short format or filename patterns
+    match2 = re.search(r"([A-Za-z]+)-(\d{2})", period_str)
+    if match2:
+        month_name = match2.group(1).upper()
+        year = 2000 + int(match2.group(2))
+        month = MONTH_MAP.get(month_name, 1)
+        return date(year, month, 1)
+
     return date.today()
 
 
@@ -108,7 +164,7 @@ class NHSAELoader:
             if not org_code or not org_name:
                 continue
 
-            period_date = parse_period_date(period_raw)
+            period_date = parse_period_date(period_raw or filename)
 
             type1_att = clean_int(row.get("A&E attendances Type 1"))
             type2_att = clean_int(row.get("A&E attendances Type 2"))
@@ -129,9 +185,7 @@ class NHSAELoader:
                 + clean_int(row.get("Emergency admissions via A&E - Type 2"))
                 + clean_int(row.get("Emergency admissions via A&E - Other A&E department"))
             )
-            over12hr = clean_int(
-                row.get("Patients who have waited 12+ hrs from DTA to admission")
-            )
+            over12hr = clean_int(row.get("Patients who have waited 12+ hrs from DTA to admission"))
 
             payload = {
                 "period_date": period_date,
@@ -214,9 +268,15 @@ class NHSAELoader:
                         records = self.parse_csv_to_records(csv_text, url)
                         persisted = self.persist_to_bronze(records)
                         total_persisted += persisted
-                    except Exception as exc:
+                    except (
+                        httpx.HTTPError,
+                        pl.exceptions.PolarsError,
+                        psycopg.Error,
+                        ValueError,
+                    ) as exc:
                         logger.error("nhs_ae_file_ingestion_error", url=url, error=str(exc))
-                        raise
+                        # Non-fatal if a specific older revised URL changed name; keep ingesting remaining
+                        continue
 
             logger.info("nhs_ae_ingestion_completed", total_records=total_persisted)
             return total_persisted
