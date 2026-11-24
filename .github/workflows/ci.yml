@@ -52,6 +52,11 @@ jobs:
             docker exec aewatch-neo4j cypher-shell -u neo4j -p aewatchpass2026 "RETURN 1;" && break || sleep 2
           done
 
+      - name: Load Database Seeds (Bronze, Silver, Gold, RAG)
+        run: |
+          echo "Loading complete seed data into PostgreSQL..."
+          gunzip -c infra/init-scripts/02_seed_data.sql.gz | docker exec -i aewatch-postgres psql -U aewatch -d aewatch_db
+
       - name: Seed Neo4j Knowledge Graph
         env:
           POSTGRES_HOST: localhost
