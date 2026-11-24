@@ -28,10 +28,12 @@ def db_conn():
 @pytest.fixture
 def clean_quarantine_table(db_conn):
     """Clean quarantine errors before and after specific quarantine tests."""
+    db_conn.rollback()
     with db_conn.cursor() as cur:
         cur.execute("DELETE FROM quarantine.ingestion_errors WHERE source_pipeline LIKE 'test_%';")
     db_conn.commit()
     yield
+    db_conn.rollback()
     with db_conn.cursor() as cur:
         cur.execute("DELETE FROM quarantine.ingestion_errors WHERE source_pipeline LIKE 'test_%';")
     db_conn.commit()
