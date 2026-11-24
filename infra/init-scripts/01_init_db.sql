@@ -11,6 +11,7 @@ CREATE SCHEMA IF NOT EXISTS bronze;
 CREATE SCHEMA IF NOT EXISTS silver;
 CREATE SCHEMA IF NOT EXISTS gold;
 CREATE SCHEMA IF NOT EXISTS quarantine;
+CREATE SCHEMA IF NOT EXISTS rag;
 
 -- Dead-Letter Quarantine Table with Full Column-Level Error Diagnostics
 CREATE TABLE IF NOT EXISTS quarantine.ingestion_errors (
