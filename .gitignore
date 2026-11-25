@@ -27,7 +27,9 @@ dbt_ae_watch/dbt_packages/
 dbt_ae_watch/logs/
 
 # Data caches & local dead-letter exports
-data/
+data/*
+!data/regulatory_docs/
+!data/regulatory_docs/**
 *.parquet
 *.duckdb
 mlruns/

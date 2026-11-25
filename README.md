@@ -180,14 +180,33 @@ PYTHONPATH=src uv run python -c "from ae_watch.graph.populator import graph_popu
 PYTHONPATH=src uv run python -c "from ae_watch.rag.vector_store import vector_store; vector_store.ingest_standards()"
 ```
 
-### 5. Launch FastAPI Gateway & Streamlit Command Centre
+### 5. Run Unified v2 Production Pipeline (`--live` / `--no-live`)
 ```bash
-# Terminal 1: Launch FastAPI Gateway
-PYTHONPATH=src uv run uvicorn ae_watch.api.app:app --host 127.0.0.1 --port 8000
+# Execute live Open-Meteo + UKHSA connectors -> Pandera Quarantine -> UK GDPR -> DuckDB -> MAPIE Conformal ML -> Error Report
+.venv/bin/python -m src.run_pipeline --live
 
-# Terminal 2: Launch Streamlit Dashboard
-PYTHONPATH=src uv run streamlit run src/ae_watch/dashboard/app.py --server.port 8501
+# Offline degraded-feed fallback smoke execution
+.venv/bin/python -m src.run_pipeline --no-live
 ```
+
+### 6. Launch FastAPI Gateway & Streamlit Command Centre
+```bash
+# Terminal 1: Launch v2 Conformal + OPEL FastAPI Gateway (or v1 ae_watch.api.app:app)
+.venv/bin/uvicorn src.app.main:app --host 127.0.0.1 --port 8000
+
+# Terminal 2: Launch v2 Streamlit Command Centre (with automatic degraded-feed fallback)
+.venv/bin/streamlit run src/app/dashboard.py --server.port 8501
+```
+
+---
+
+## 🧠 v2 Production Upgrades & Governance Highlights
+
+- **Live UK Open Data Connectors (`src/ingestion/live_nhs_connectors.py`):** Queries real-time Open-Meteo meteorological triggers across 10 major NHS Acute Trust hubs (`REM`, `R0A`, `RJ1`, `RR8`, `RRK`, `RTD`, `RBL`, `RJR`, `RWW`, `RVV`) and UKHSA Influenza/RSV surveillance with `tenacity` bounded retries and graceful `LIVE_NHS_FEED_DEGRADED` offline fallback.
+- **Pandera Quarantine & UK GDPR (`src/ingestion/ae_pipeline.py`):** Enforces `AETrustSitRepSchema` contracts, hashes sensitive identifiers via HMAC-SHA256 (`pseudonymise_nhs_identifier`), persists clean records to DuckDB (`data/processed/aewatch.duckdb`), and routes invalid rows to Parquet dead-letter quarantine (`data/quarantine/ae_quarantine.parquet`).
+- **Trust-Grouped Conformal ML & Sliced Audits (`src/models/conformal_forecaster.py`, `src/evaluation/error_analysis.py`):** Trains `GroupKFold` (by NHS ODS Trust code) LightGBM + `MAPIE` 90% conformal prediction intervals for 4-hour breach rates and 12-hour trolley waits, tracked in MLflow SQLite (`sqlite:///mlruns/mlflow.db`), generating [docs/ERROR_ANALYSIS_REPORT.md](docs/ERROR_ANALYSIS_REPORT.md).
+- **Disk-Backed Clinical Regulatory RAG & OPEL Copilot (`src/agents/clinical_copilot.py`):** Parses statutory `.pdf` (`pypdf`), `.md`, and `.txt` standards (NHS OPEL 1–4 Framework, NICE NG94, RCEM Crowding) in `data/regulatory_docs/` via hybrid `BM25Okapi` + `TfidfVectorizer` RRF, protected by NHS-number/postcode PII redaction, prompt-injection blocking, deterministic OPEL calculation, and a Citation-Verifier Judge node.
+- **300-Capability Technical Matrix:** Full file-and-symbol mapping documented in [docs/SKILLS_MATRIX.md](docs/SKILLS_MATRIX.md).
 
 Access the interfaces:
 - **Interactive Command Centre:** `http://localhost:8501`
@@ -220,10 +239,11 @@ Modular HCL configurations provisioning an NHS-compliant cloud footprint in Lond
 
 ### GitHub Actions CI (`.github/workflows/ci.yml`)
 Automated multi-stage continuous integration pipeline triggered on push and pull requests:
-1. **Linting & Quality:** `ruff check .`
-2. **Formatting:** `ruff format --check .`
+1. **Linting & Quality:** `ruff check src tests`
+2. **Formatting:** `ruff format --check src tests`
 3. **dbt Contract Validation:** `dbt parse`
-4. **Pytest Verification:** 62 synchronous unit, contract, and integration tests across containerized Postgres and Neo4j.
+4. **Pipeline Smoke Run:** `python -m src.run_pipeline --no-live`
+5. **Pytest Verification:** Full synchronous unit, contract, v2 conformal/RAG, and integration suite across containerized Postgres and Neo4j.
 
 ---
 
@@ -231,12 +251,12 @@ Automated multi-stage continuous integration pipeline triggered on push and pull
 
 Execute the comprehensive test suite locally:
 ```bash
-# Run all 62 unit and integration tests
-PYTHONPATH=src uv run pytest -v
+# Run full v1 + v2 unit and integration test suite
+.venv/bin/pytest -v
 
 # Verify code formatting and linting
-uv run ruff check .
-uv run ruff format --check .
+.venv/bin/ruff check src tests
+.venv/bin/ruff format --check src tests
 ```
 
 ---

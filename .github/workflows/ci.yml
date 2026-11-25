@@ -34,11 +34,11 @@ jobs:
 
       - name: Ruff Lint Verification
         run: |
-          uv run ruff check .
+          uv run ruff check src tests
 
       - name: Ruff Code Formatting Check
         run: |
-          uv run ruff format --check .
+          uv run ruff format --check src tests
 
       - name: Start Docker Stack (Postgres with PostGIS + pgvector & Neo4j)
         run: |
@@ -79,6 +79,10 @@ jobs:
           POSTGRES_DB: aewatch_db
         run: |
           uv run dbt parse --project-dir dbt_ae_watch --profiles-dir dbt_ae_watch
+
+      - name: Run v2 Pipeline Smoke Verification (--no-live)
+        run: |
+          uv run python -m src.run_pipeline --no-live
 
       - name: Run Full Pytest Suite
         env:
