@@ -1,0 +1,16 @@
+{
+  "slug": "ae-watch-uk",
+  "name": "AE-Watch UK",
+  "domain": "Hospital operations",
+  "subtitle": "Explore how a weather-adjusted pressure estimate responds to winter and data gaps.",
+  "units": "Percentage-point absolute error",
+  "baseline": "Seasonal baseline",
+  "candidate": "Weather adjustment",
+  "stress": "Cold spell",
+  "groups": [
+    "North West",
+    "Midlands",
+    "London"
+  ],
+  "note": "Outcomes and cold-spell uplift are synthetic, at an aggregate level. This benchmark is for demonstration and does not support clinical or operational decisions."
+}

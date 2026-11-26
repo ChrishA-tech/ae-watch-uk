@@ -265,3 +265,8 @@ Execute the comprehensive test suite locally:
 
 This project is authored and developed by **CHRISH PEP FELIX A**.  
 Released under the **MIT License**.
+
+
+## Interactive decision replay
+
+Explore [the dashboard](https://chrisha-tech.github.io/replay/?project=ae-watch-uk) or reproduce the [scenario benchmark and error analysis](replay/README.md). The bundled replay uses synthetic scenarios.

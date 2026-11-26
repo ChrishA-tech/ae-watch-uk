@@ -1,0 +1,611 @@
+{
+  "config": {
+    "slug": "ae-watch-uk",
+    "name": "AE-Watch UK",
+    "domain": "Hospital operations",
+    "subtitle": "Explore how a weather-adjusted pressure estimate responds to winter and data gaps.",
+    "units": "Percentage-point absolute error",
+    "baseline": "Seasonal baseline",
+    "candidate": "Weather adjustment",
+    "stress": "Cold spell",
+    "groups": [
+      "North West",
+      "Midlands",
+      "London"
+    ],
+    "note": "Outcomes and cold-spell uplift are synthetic, at an aggregate level. This benchmark is for demonstration and does not support clinical or operational decisions."
+  },
+  "provenance": "Deterministic synthetic scenarios",
+  "cases": [
+    {
+      "period": 1,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 0.89204,
+      "candidate": 0.89204
+    },
+    {
+      "period": 2,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 2.91609,
+      "candidate": 2.91609
+    },
+    {
+      "period": 3,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 1.26005,
+      "candidate": 1.26005
+    },
+    {
+      "period": 4,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 0.4527,
+      "candidate": 7.5473
+    },
+    {
+      "period": 5,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 1.60818,
+      "candidate": 6.39182
+    },
+    {
+      "period": 6,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 7.89005,
+      "candidate": 0.10995
+    },
+    {
+      "period": 7,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 7.30063,
+      "candidate": 7.30063
+    },
+    {
+      "period": 8,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 4.6886,
+      "candidate": 4.6886
+    },
+    {
+      "period": 9,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 10.43567,
+      "candidate": 10.43567
+    },
+    {
+      "period": 10,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 1.90871,
+      "candidate": 1.90871
+    },
+    {
+      "period": 11,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 7.03605,
+      "candidate": 7.03605
+    },
+    {
+      "period": 12,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 4.94224,
+      "candidate": 4.94224
+    },
+    {
+      "period": 13,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 8.52781,
+      "candidate": 0.52781
+    },
+    {
+      "period": 14,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 7.006,
+      "candidate": 0.994
+    },
+    {
+      "period": 15,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 5.7672,
+      "candidate": 2.2328
+    },
+    {
+      "period": 16,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 0.62606,
+      "candidate": 0.62606
+    },
+    {
+      "period": 17,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 4.6689,
+      "candidate": 4.6689
+    },
+    {
+      "period": 18,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 3.39921,
+      "candidate": 3.39921
+    },
+    {
+      "period": 19,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 7.73498,
+      "candidate": 7.73498
+    },
+    {
+      "period": 20,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 4.03634,
+      "candidate": 4.03634
+    },
+    {
+      "period": 21,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 0.03642,
+      "candidate": 0.03642
+    },
+    {
+      "period": 22,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 18.66653,
+      "candidate": 10.66653
+    },
+    {
+      "period": 23,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 6.44216,
+      "candidate": 1.55784
+    },
+    {
+      "period": 24,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 7.81988,
+      "candidate": 0.18012
+    },
+    {
+      "period": 25,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 0.30461,
+      "candidate": 0.30461
+    },
+    {
+      "period": 26,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 1.32715,
+      "candidate": 1.32715
+    },
+    {
+      "period": 27,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 2.66914,
+      "candidate": 2.66914
+    },
+    {
+      "period": 28,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 13.46086,
+      "candidate": 13.46086
+    },
+    {
+      "period": 29,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 6.24715,
+      "candidate": 6.24715
+    },
+    {
+      "period": 30,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 4.79476,
+      "candidate": 4.79476
+    },
+    {
+      "period": 31,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 6.87182,
+      "candidate": 1.12818
+    },
+    {
+      "period": 32,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 7.36547,
+      "candidate": 0.63453
+    },
+    {
+      "period": 33,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 10.10067,
+      "candidate": 2.10067
+    },
+    {
+      "period": 34,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 1.18487,
+      "candidate": 1.18487
+    },
+    {
+      "period": 35,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 6.34511,
+      "candidate": 6.34511
+    },
+    {
+      "period": 36,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 4.20464,
+      "candidate": 4.20464
+    },
+    {
+      "period": 37,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 1.33714,
+      "candidate": 1.33714
+    },
+    {
+      "period": 38,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 3.93858,
+      "candidate": 3.93858
+    },
+    {
+      "period": 39,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 1.32361,
+      "candidate": 1.32361
+    },
+    {
+      "period": 40,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 8.27233,
+      "candidate": 0.27233
+    },
+    {
+      "period": 41,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 14.17136,
+      "candidate": 6.17136
+    },
+    {
+      "period": 42,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 6.91999,
+      "candidate": 1.08001
+    },
+    {
+      "period": 43,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 7.19954,
+      "candidate": 7.19954
+    },
+    {
+      "period": 44,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 4.07753,
+      "candidate": 4.07753
+    },
+    {
+      "period": 45,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 3.38135,
+      "candidate": 3.38135
+    },
+    {
+      "period": 46,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 1.60097,
+      "candidate": 1.60097
+    },
+    {
+      "period": 47,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 0.99947,
+      "candidate": 0.99947
+    },
+    {
+      "period": 48,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 1.78841,
+      "candidate": 1.78841
+    },
+    {
+      "period": 49,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 14.74332,
+      "candidate": 6.74332
+    },
+    {
+      "period": 50,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 8.8739,
+      "candidate": 0.8739
+    },
+    {
+      "period": 51,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 12.86473,
+      "candidate": 4.86473
+    },
+    {
+      "period": 52,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 1.91109,
+      "candidate": 1.91109
+    },
+    {
+      "period": 53,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 4.31808,
+      "candidate": 4.31808
+    },
+    {
+      "period": 54,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 1.31151,
+      "candidate": 1.31151
+    },
+    {
+      "period": 55,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 3.57396,
+      "candidate": 3.57396
+    },
+    {
+      "period": 56,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 1.42419,
+      "candidate": 1.42419
+    },
+    {
+      "period": 57,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 4.5368,
+      "candidate": 4.5368
+    },
+    {
+      "period": 58,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 7.52034,
+      "candidate": 0.47966
+    },
+    {
+      "period": 59,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 1.47911,
+      "candidate": 6.52089
+    },
+    {
+      "period": 60,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 7.379,
+      "candidate": 0.621
+    },
+    {
+      "period": 61,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 2.4121,
+      "candidate": 2.4121
+    },
+    {
+      "period": 62,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 0.68649,
+      "candidate": 0.68649
+    },
+    {
+      "period": 63,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 0.93521,
+      "candidate": 0.93521
+    },
+    {
+      "period": 64,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 4.71975,
+      "candidate": 4.71975
+    },
+    {
+      "period": 65,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 9.9577,
+      "candidate": 9.9577
+    },
+    {
+      "period": 66,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 0.42193,
+      "candidate": 0.42193
+    },
+    {
+      "period": 67,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 9.74272,
+      "candidate": 1.74272
+    },
+    {
+      "period": 68,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 15.37292,
+      "candidate": 7.37292
+    },
+    {
+      "period": 69,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 14.10068,
+      "candidate": 6.10068
+    },
+    {
+      "period": 70,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 1.47704,
+      "candidate": 1.47704
+    },
+    {
+      "period": 71,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 2.94842,
+      "candidate": 2.94842
+    },
+    {
+      "period": 72,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 10.24618,
+      "candidate": 10.24618
+    },
+    {
+      "period": 73,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 2.22461,
+      "candidate": 2.22461
+    },
+    {
+      "period": 74,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 0.21637,
+      "candidate": 0.21637
+    },
+    {
+      "period": 75,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 0.77726,
+      "candidate": 0.77726
+    },
+    {
+      "period": 76,
+      "group": "North West",
+      "scenario": "Cold spell",
+      "baseline": 9.36802,
+      "candidate": 1.36802
+    },
+    {
+      "period": 77,
+      "group": "Midlands",
+      "scenario": "Cold spell",
+      "baseline": 9.84853,
+      "candidate": 1.84853
+    },
+    {
+      "period": 78,
+      "group": "London",
+      "scenario": "Cold spell",
+      "baseline": 13.16011,
+      "candidate": 5.16011
+    },
+    {
+      "period": 79,
+      "group": "North West",
+      "scenario": "Feed degraded",
+      "baseline": 1.55698,
+      "candidate": 1.55698
+    },
+    {
+      "period": 80,
+      "group": "Midlands",
+      "scenario": "Feed degraded",
+      "baseline": 3.09081,
+      "candidate": 3.09081
+    },
+    {
+      "period": 81,
+      "group": "London",
+      "scenario": "Feed degraded",
+      "baseline": 7.13513,
+      "candidate": 7.13513
+    },
+    {
+      "period": 82,
+      "group": "North West",
+      "scenario": "Typical",
+      "baseline": 9.58147,
+      "candidate": 9.58147
+    },
+    {
+      "period": 83,
+      "group": "Midlands",
+      "scenario": "Typical",
+      "baseline": 3.34021,
+      "candidate": 3.34021
+    },
+    {
+      "period": 84,
+      "group": "London",
+      "scenario": "Typical",
+      "baseline": 1.06515,
+      "candidate": 1.06515
+    }
+  ],
+  "baseline_mean": 5.360367261904762,
+  "candidate_mean": 3.4907982142857144
+}
