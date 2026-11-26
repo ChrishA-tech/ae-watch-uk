@@ -1,0 +1,42 @@
+{
+  "source": "NHS England October 2026 monthly A&E time series, Performance worksheet",
+  "metric": "MAE in percentage points, national Type 1 over-four-hours rate",
+  "baseline": "Most recent assumed available rate, t-2",
+  "candidate": "Same calendar month last year",
+  "holdout": [
+    "2024-11",
+    "2026-10"
+  ],
+  "metrics": {
+    "cases": 24,
+    "baseline_loss": 1.885306,
+    "candidate_loss": 1.453649,
+    "candidate_wins": 15,
+    "baseline_wins": 9,
+    "ties": 0,
+    "largest_candidate_disadvantage": 3.790599,
+    "worst_case": "2025-12"
+  },
+  "by_season": {
+    "winter": {
+      "cases": 6,
+      "baseline_loss": 1.713927,
+      "candidate_loss": 1.758472,
+      "candidate_wins": 3,
+      "baseline_wins": 3,
+      "ties": 0,
+      "largest_candidate_disadvantage": 3.790599,
+      "worst_case": "2025-12"
+    },
+    "other_months": {
+      "cases": 18,
+      "baseline_loss": 1.942432,
+      "candidate_loss": 1.352041,
+      "candidate_wins": 12,
+      "baseline_wins": 6,
+      "ties": 0,
+      "largest_candidate_disadvantage": 2.628619,
+      "worst_case": "2025-11"
+    }
+  }
+}
